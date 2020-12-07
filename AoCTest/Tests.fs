@@ -4,6 +4,7 @@ open System.IO
 open Xunit
 open Validators
 open CustomCustoms
+open ColoredBags
 
 [<Theory>]
 [<InlineData "Day5.txt">]
@@ -25,3 +26,15 @@ let ``Day6Test`` (filename, result, part) =
     else
         let sum = getQuestionSum2 data
         Assert.Equal(result, sum)
+
+[<Theory>]
+[<InlineData ("Day7.txt", 4, 1)>]
+[<InlineData ("Day7.txt", 32, 2)>]
+let ``Day7Test`` (filename, result, part) =
+    let data = Seq.toList (File.ReadAllLines $"Input\\{filename}")
+    if part = 1 then
+        let foundBags = bagSearchUp data
+        Assert.Equal(result, foundBags.Length)
+    else
+        //bagSearchDown
+        Assert.True(false)
