@@ -1,6 +1,5 @@
 ﻿open System.IO
 open CustomCustoms
-open Common.Common
 
 [<EntryPoint>]
 let main argv =
