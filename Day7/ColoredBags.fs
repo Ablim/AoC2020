@@ -1,5 +1,7 @@
 ﻿module ColoredBags
 
+open Common.Common
+
 let rec listContains (list : string list) item =
     match list with
     | [] -> false
@@ -35,5 +37,31 @@ let bagSearchUp (rows : string list) =
                 loop tail searchBags foundBags
     loop divided ["shiny gold"] []
 
+let parseBagRow (row : string) =
+    let parts = row.Split " "
+    match parseInt parts.[0] with
+    | Some _ -> [| parts.[0]; $"{parts.[1]} {parts.[2]}" |]
+    | None -> [||]
+
 let bagSearchDown (rows : string list) =
-    0
+    let divided =
+        Seq.map (fun (x : string) -> x.Split " contain ") rows |>
+            Seq.toList
+
+    let rec loop (rules : string [] list) (target : string) =
+        match rules with
+        | [] -> 0
+        | h :: t ->
+            if h.[0].Contains target then
+                h.[1].Split ", " |>
+                    Seq.map parseBagRow |>
+                        Seq.map (fun x ->
+                            if x.Length = 0 then
+                                0
+                            else
+                                let factor = x.[0] |> int
+                                factor + factor * (loop divided x.[1])) |>
+                                Seq.sum
+            else
+                loop t target
+    loop divided "shiny gold"

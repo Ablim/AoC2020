@@ -8,4 +8,7 @@ let main argv =
     // Part 1
     printfn "Answer to part 1 is %i" (bagSearchUp data).Length
     
+    // Part 2
+    printfn "Answer to part 2 is %i" (bagSearchDown data)
+
     0 // return an integer exit code

@@ -20,3 +20,9 @@ module Common =
     
     let listLength (list : 'a list) =
         list.Length
+
+    let parseInt (value : string) =
+        try
+            Some (value |> int)
+        with
+            _ -> None

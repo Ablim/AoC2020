@@ -36,5 +36,5 @@ let ``Day7Test`` (filename, result, part) =
         let foundBags = bagSearchUp data
         Assert.Equal(result, foundBags.Length)
     else
-        //bagSearchDown
-        Assert.True(false)
+        let sum = bagSearchDown data
+        Assert.Equal(result, sum)
