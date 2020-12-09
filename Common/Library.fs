@@ -26,3 +26,15 @@ module Common =
             Some (value |> int)
         with
             _ -> None
+
+    let removeLast (list:'a list) =
+        let reversed = Seq.rev list |> Seq.toList
+        match reversed with
+        | [] -> []
+        | h::t -> Seq.rev t |> Seq.toList
+
+    let addLast (list:'a list) a =
+        let reversed = Seq.rev list |> Seq.toList
+        a::reversed |>
+            Seq.rev |>
+                Seq.toList

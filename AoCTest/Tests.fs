@@ -6,6 +6,7 @@ open Validators
 open CustomCustoms
 open ColoredBags
 open Boot
+open XMAS
 
 [<Theory>]
 [<InlineData "Day5.txt">]
@@ -51,3 +52,24 @@ let ``Day8Test`` (filename, result, part) =
     else
         let fixedAcc = executeAndFix data
         Assert.Equal(result, fixedAcc)
+
+[<Theory>]
+[<InlineData ("Day9.txt", 127, 1)>]
+[<InlineData ("Day9.txt", 62, 2)>]
+let ``Day9Test`` (filename, result, part) =
+    let data =
+        File.ReadAllLines $"Input\\{filename}" |>
+            Seq.map (fun x -> bigint.Parse x) |>
+                Seq.toList
+    if part = 1 then
+        let value = hackerSearch data 5
+        Assert.Equal(result, value)
+    else
+        let value = findSequence data 5
+        Assert.Equal(result, value)
+
+[<Theory>]
+[<InlineData ("Day10.txt", 0, 1)>]
+[<InlineData ("Day10.txt", 0, 2)>]
+let ``Day10Test`` (filename, result, part) =
+    Assert.True(true)
