@@ -19,7 +19,7 @@ let private isSum (nums:bigint list) (num:bigint) =
 let hackerSearch (data:bigint list) preambleSize =
     let rec loop (body:bigint list) (preamble:bigint list) =
         match body with
-        | [] -> 0I
+        | [] -> bigint 0
         | h::t ->
             if isSum preamble h then
                 loop t (addLast preamble.Tail h)
@@ -32,7 +32,7 @@ let hackerSearch (data:bigint list) preambleSize =
 
 let private getMinMaxSum (sequence: bigint list) =
     match sequence with
-    | [] -> 0I
+    | [] -> bigint 0
     | _ -> (Seq.min sequence) + (Seq.max sequence)
 
 let findSequence (data: bigint list) preambleSize =
@@ -44,7 +44,7 @@ let findSequence (data: bigint list) preambleSize =
             getMinMaxSum sequence
         elif currentSum < invalidNum then
             match numbers with
-            | [] -> 0I
+            | [] -> bigint 0
             | h::t -> loop t index (h::sequence)
         else
             loop data.[index..] (index+1) []

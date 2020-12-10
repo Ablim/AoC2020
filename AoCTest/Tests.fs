@@ -10,7 +10,7 @@ open XMAS
 
 [<Theory>]
 [<InlineData "Day5.txt">]
-let ``Day5Test`` (filename) =
+let day5Test filename =
     let data = File.ReadAllLines $"Input\\{filename}"
     let validate (row : string) =
         let parts = row.Split ' '
@@ -20,7 +20,7 @@ let ``Day5Test`` (filename) =
 [<Theory>]
 [<InlineData ("Day6.txt", 11, 1)>]
 [<InlineData ("Day6.txt", 6, 2)>]
-let ``Day6Test`` (filename, result, part) =
+let day6Test filename result part =
     let data = Seq.toList (File.ReadAllLines $"Input\\{filename}")
     if part = 1 then
         let sum = getQuestionSum data
@@ -32,7 +32,7 @@ let ``Day6Test`` (filename, result, part) =
 [<Theory>]
 [<InlineData ("Day7.txt", 4, 1)>]
 [<InlineData ("Day7.txt", 32, 2)>]
-let ``Day7Test`` (filename, result, part) =
+let day7Test filename result part =
     let data = Seq.toList (File.ReadAllLines $"Input\\{filename}")
     if part = 1 then
         let foundBags = bagSearchUp data
@@ -44,7 +44,7 @@ let ``Day7Test`` (filename, result, part) =
 [<Theory>]
 [<InlineData ("Day8.txt", 5, 1)>]
 [<InlineData ("Day8.txt", 8, 2)>]
-let ``Day8Test`` (filename, result, part) =
+let day8Test filename result part =
     let data = File.ReadAllLines $"Input\\{filename}"
     if part = 1 then
         let value = execute data
@@ -54,22 +54,22 @@ let ``Day8Test`` (filename, result, part) =
         Assert.Equal(result, fixedAcc)
 
 [<Theory>]
-[<InlineData ("Day9.txt", 127, 1)>]
-[<InlineData ("Day9.txt", 62, 2)>]
-let ``Day9Test`` (filename, result, part) =
+[<InlineData ("Day9.txt", "127", 1)>]
+[<InlineData ("Day9.txt", "62", 2)>]
+let day9Test filename result part =
     let data =
         File.ReadAllLines $"Input\\{filename}" |>
             Seq.map (fun x -> bigint.Parse x) |>
                 Seq.toList
     if part = 1 then
         let value = hackerSearch data 5
-        Assert.Equal(result, value)
+        Assert.Equal(result, value.ToString())
     else
         let value = findSequence data 5
-        Assert.Equal(result, value)
+        Assert.Equal(result, value.ToString())
 
 [<Theory>]
 [<InlineData ("Day10.txt", 0, 1)>]
 [<InlineData ("Day10.txt", 0, 2)>]
-let ``Day10Test`` (filename, result, part) =
+let day10Test filename result part =
     Assert.True(true)
