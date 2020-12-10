@@ -1,9 +1,12 @@
 ﻿module Adapters
 
+let private canConnect c1 c2 =
+    abs (c1 - c2) <= 3
+
 let rec private areConnected adapters =
     match adapters with
     | one::two::tail ->
-        if abs (one - two) <= 3 then
+        if canConnect one two  then
             areConnected (two::tail)
         else
             false
@@ -23,31 +26,33 @@ let private getJoltDiffsBy adapters (f: int -> int) =
 let connect adapters =
     let deviceJolt = 3 + Seq.max adapters
     let sorted = Seq.sort (0::deviceJolt::adapters) |> Seq.toList
+    printfn "Chain is connected: %b" (areConnected sorted)
     getJoltDiffsBy sorted (fun x -> 1 + x) * getJoltDiffsBy sorted (fun x -> 3 + x)
 
-let private checkEnds (connections: int list) left right =
-    connections.Length > 0
-    && (connections.[0] = left
-        && connections.[connections.Length-1] = right
-        || connections.[0] = right
-        && connections.[connections.Length-1] = left)
-
 let private branchAndPrune (connections: int list) wall device =
-    let rec loop (remaining: int list) selected =
-        if not (areConnected selected) then
-            0
-        else
-            match remaining with
-            | [] ->
-                if checkEnds selected wall device then
-                    1
-                else
-                    0
-            | h::t -> (loop t (h::selected)) + (loop t selected)
-    loop connections []
+    let rec loop (remaining: int list) lastConnection =
+        match remaining with
+        | [] ->
+            //if acc % 10000000 = 0 then printfn "%i" acc
+            if canConnect lastConnection device then 1 else 0
+        | h::t ->
+            // Too much distance
+            if not (canConnect lastConnection h) then
+                0
+            // h must remain
+            elif t.Length > 0 && not (canConnect lastConnection t.Head) then
+                loop t h
+            // h is optional, try with and without
+            else
+                loop t h + loop t lastConnection
+    loop connections wall
 
 let countCombinations adapters =
     let deviceJolt = 3 + Seq.max adapters
-    let allConnections = 0::deviceJolt::adapters
-    let sorted = Seq.sort allConnections |> Seq.toList
+    let sorted = Seq.sort adapters |> Seq.toList
     branchAndPrune sorted 0 deviceJolt
+
+let sortAndPrint adapters =
+    let max = Seq.max adapters
+    let sorted = Seq.sort (0::max::adapters)
+    Seq.iter (fun x -> printfn "%i" x) sorted
