@@ -70,9 +70,9 @@ let day9Test filename result part =
         Assert.Equal(result, value.ToString())
 
 [<Theory>]
-[<InlineData ("Day10.txt", 220, 1)>]
-[<InlineData ("Day10.txt", 19208, 2)>]
-[<InlineData ("Day10.1.txt", 8, 2)>]
+[<InlineData ("Day10.txt", "220", 1)>]
+[<InlineData ("Day10.txt", "19208", 2)>]
+[<InlineData ("Day10.1.txt", "8", 2)>]
 let day10Test filename expected part =
     let input =
         File.ReadAllLines $"Input\\{filename}" |>
@@ -80,7 +80,7 @@ let day10Test filename expected part =
                 Seq.toList
     if part = 1 then
         let output = connect input
-        Assert.Equal(expected, output)
+        Assert.Equal(bigint.Parse expected, output)
     else
         let output = countCombinations input
-        Assert.Equal(expected, output)
+        Assert.Equal(bigint.Parse expected, output)

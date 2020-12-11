@@ -27,24 +27,38 @@ let connect adapters =
     let deviceJolt = 3 + Seq.max adapters
     let sorted = Seq.sort (0::deviceJolt::adapters) |> Seq.toList
     printfn "Chain is connected: %b" (areConnected sorted)
-    getJoltDiffsBy sorted (fun x -> 1 + x) * getJoltDiffsBy sorted (fun x -> 3 + x)
+    bigint (getJoltDiffsBy sorted (fun x -> 1 + x) * getJoltDiffsBy sorted (fun x -> 3 + x))
 
 let private branchAndPrune (connections: int list) wall device =
+    let mutable lookup = Map.empty
     let rec loop (remaining: int list) lastConnection =
         match remaining with
         | [] ->
-            //if acc % 10000000 = 0 then printfn "%i" acc
-            if canConnect lastConnection device then 1 else 0
+            if canConnect lastConnection device then bigint 1 else bigint 0
         | h::t ->
             // Too much distance
             if not (canConnect lastConnection h) then
-                0
+                bigint 0
             // h must remain
             elif t.Length > 0 && not (canConnect lastConnection t.Head) then
-                loop t h
+                match lookup.TryFind h with
+                | None ->
+                    let v = loop t h
+                    lookup <- lookup.Add(h, v)
+                    v
+                | Some v -> v
             // h is optional, try with and without
             else
-                loop t h + loop t lastConnection
+                let left =
+                    match lookup.TryFind h with
+                    | None ->
+                        let l = loop t h
+                        lookup <- lookup.Add(h, l)
+                        l
+                    | Some l -> l
+                let right = loop t lastConnection
+                lookup <- lookup.Add(lastConnection, left + right)
+                left + right
     loop connections wall
 
 let countCombinations adapters =
