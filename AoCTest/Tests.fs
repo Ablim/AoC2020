@@ -8,6 +8,7 @@ open ColoredBags
 open Boot
 open XMAS
 open Adapters
+open Navigation
 
 [<Theory>]
 [<InlineData "Day5.txt">]
@@ -84,3 +85,18 @@ let day10Test filename expected part =
     else
         let output = countCombinations input
         Assert.Equal(bigint.Parse expected, output)
+
+[<Theory>]
+[<InlineData ("Day12.txt", 25, 1)>]
+[<InlineData ("Day12.txt", 0, 2)>]
+let day12Test filename expected part =
+    let input =
+        File.ReadAllLines $"Input\\{filename}" |>
+            Seq.toList
+    if part = 1 then
+        let output = getManhattanDist input
+        Assert.Equal(expected, output)
+    else
+        //let output = countCombinations input
+        //Assert.Equal(bigint.Parse expected, output)
+        Assert.True(false)
