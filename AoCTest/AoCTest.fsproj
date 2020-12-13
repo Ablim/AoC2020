@@ -8,6 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Input\Day13.3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Input\Day13.4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Input\Day13.5.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Input\Day13.6.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Input\Day13.2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Input\Day13.1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Input\Day13.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Input\Day12.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -36,6 +57,8 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
 
+  <ItemGroup />
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -52,6 +75,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Day10\Day10.fsproj" />
     <ProjectReference Include="..\Day12\Day12.fsproj" />
+    <ProjectReference Include="..\Day13\Day13.fsproj" />
     <ProjectReference Include="..\Day5\Day5.fsproj" />
     <ProjectReference Include="..\Day6\Day6.fsproj" />
     <ProjectReference Include="..\Day7\Day7.fsproj" />

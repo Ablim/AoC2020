@@ -9,6 +9,7 @@ open Boot
 open XMAS
 open Adapters
 open Navigation
+open BusPlanner
 
 [<Theory>]
 [<InlineData "Day5.txt">]
@@ -100,3 +101,22 @@ let day12Test filename expected part =
         //let output = countCombinations input
         //Assert.Equal(bigint.Parse expected, output)
         Assert.True(false)
+
+[<Theory>]
+[<InlineData ("Day13.txt", 295, 1)>]
+let day13Part1Test filename expected part =
+    let input = File.ReadAllLines $"Input\\{filename}"
+    let output = getBusWaitFactor (input.[0] |> int) input.[1]
+    Assert.Equal(expected, output)
+
+[<Theory>]
+[<InlineData ("Day13.1.txt", "1068781")>]
+[<InlineData ("Day13.2.txt", "3417")>]
+[<InlineData ("Day13.3.txt", "754018")>]
+[<InlineData ("Day13.4.txt", "779210")>]
+[<InlineData ("Day13.5.txt", "1261476")>]
+[<InlineData ("Day13.6.txt", "1202161486")>]
+let day13Part2Test filename expected =
+    let input = File.ReadAllLines $"Input\\{filename}"
+    let output = getSchedule input.[0]
+    Assert.Equal(bigint.Parse expected, output)
