@@ -42,16 +42,36 @@ let private getDepartures busses =
         | [] -> departures
         | h :: t ->
             if (h = "x") then
-                loop t (offset+bigint 1) departures
+                loop t (offset+1I) departures
             else
                 let id = bigint.Parse h
                 let dep = { Id = id; Offset = offset }
-                loop t (offset+bigint 1) (dep::departures)
-    loop busses (bigint 0) [] |>
+                loop t (offset+1I) (dep::departures)
+    loop busses (0I) [] |>
         Seq.rev |>
             Seq.toList
 
 let getSchedule (busses: string) =
+    let rec loop2 funcs timestamp =
+        match funcs with
+        | [] -> true
+        | h::t -> 
+            if not (h timestamp = 0I) then
+                false
+            else
+                loop2 t timestamp
+
+    let rec loop funcs maxId timestamp =
+        if loop2 funcs timestamp then
+            timestamp
+        else
+            loop funcs maxId (timestamp+maxId)
+
     let busList = busses.Split "," |> Seq.toList
     let departures = getDepartures busList
-    bigint 0
+    let funcs =
+        Seq.map (fun x -> fun t -> (t+x.Offset) % x.Id) departures |>
+            Seq.toList
+    let maxId = Seq.map (fun x -> x.Id) departures |> Seq.max
+    let maxDep = (Seq.where (fun x -> x.Id = maxId) departures |> Seq.toList).[0]
+    loop funcs maxDep.Id (maxDep.Id - maxDep.Offset)
