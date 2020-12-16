@@ -89,18 +89,17 @@ let day10Test filename expected part =
 
 [<Theory>]
 [<InlineData ("Day12.txt", 25, 1)>]
-[<InlineData ("Day12.txt", 0, 2)>]
+[<InlineData ("Day12.txt", 286, 2)>]
 let day12Test filename expected part =
     let input =
         File.ReadAllLines $"Input\\{filename}" |>
             Seq.toList
     if part = 1 then
-        let output = getManhattanDist input
+        let output = navigate input |> getManhattanDist
         Assert.Equal(expected, output)
     else
-        //let output = countCombinations input
-        //Assert.Equal(bigint.Parse expected, output)
-        Assert.True(false)
+        let output = navigateWaypoint input |> getManhattanDist
+        Assert.Equal(expected, output)
 
 [<Theory>]
 [<InlineData ("Day13.txt", 295, 1)>]

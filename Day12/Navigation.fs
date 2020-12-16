@@ -1,10 +1,14 @@
 ﻿module Navigation
 
+open System
+
 type Coordinate =
     {
         Latitude: int
         Longitude: int
-    }
+    } with 
+    member this.Add lat long =
+        { Latitude = this.Latitude + lat; Longitude = this.Longitude + long }
 
 let private fromDirection direction =
     match direction with
@@ -71,6 +75,38 @@ let navigate instructions =
             | _ -> invalidArg (nameof inst) "Invalid movement"
     loop instructions 0 0 'E'
 
-let getManhattanDist instructions =
-    let coords = navigate instructions
+let getManhattanDist coords =
     (abs coords.Latitude) + (abs coords.Longitude)
+
+let rec private moveBoat (boat: Coordinate) (waypoint: Coordinate) steps =
+    match steps with
+    | 0 -> boat
+    | i -> moveBoat (boat.Add waypoint.Latitude waypoint.Longitude) waypoint (i-1)
+
+let private rotateWaypoint waypoint deg =
+    let x = waypoint.Longitude |> float
+    let y = waypoint.Latitude |> float
+    let degRad = deg * Math.PI / 180.0
+    let newX = x * (cos degRad) - y * (sin degRad)
+    let newY = x * (sin degRad) + y * (cos degRad)
+    let newLat = round newY |> int
+    let newLong = round newX |> int
+    { Latitude = newLat; Longitude = newLong }
+
+let navigateWaypoint instructions =
+    let rec loop (instructions: string list) (boat: Coordinate) (waypoint: Coordinate) =
+        match instructions with
+        | [] -> { Latitude = boat.Latitude; Longitude = boat.Longitude }
+        | h::t ->
+            let inst = h.[0]
+            let mag = h.[1..] |> int
+            match inst with
+            | 'N' -> loop t boat (waypoint.Add mag 0)
+            | 'S' -> loop t boat (waypoint.Add -mag 0)
+            | 'E' -> loop t boat (waypoint.Add 0 mag)
+            | 'W' -> loop t boat (waypoint.Add 0 -mag)
+            | 'R' -> loop t boat (rotateWaypoint waypoint (-mag |> float))
+            | 'L' -> loop t boat (rotateWaypoint waypoint (mag |> float))
+            | 'F' -> loop t (moveBoat boat waypoint mag) waypoint
+            | _ -> failwithf "Invalid instruction %c" inst
+    loop instructions { Latitude = 0; Longitude = 0 } { Latitude = 1; Longitude = 10 }
