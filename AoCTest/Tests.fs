@@ -2,14 +2,16 @@ module Tests
 
 open System.IO
 open Xunit
-open Validators
-open CustomCustoms
-open ColoredBags
-open Boot
-open XMAS
+
 open Adapters
-open Navigation
+open Boot
 open BusPlanner
+open ColoredBags
+open CustomCustoms
+open Navigation
+open SeatingSystem
+open Validators
+open XMAS
 
 [<Theory>]
 [<InlineData "Day5.txt">]
@@ -86,6 +88,19 @@ let day10Test filename expected part =
     else
         let output = countCombinations input
         Assert.Equal(bigint.Parse expected, output)
+
+[<Theory>]
+[<InlineData ("Day11.txt", 37, 1)>]
+[<InlineData ("Day11.txt", 0, 2)>]
+let day11Test filename expected part =
+    let input = File.ReadAllLines $"Input\\{filename}"
+    
+    if part = 1 then
+        let output = generateSeating input |> countOccupied
+        Assert.Equal(expected, output)
+    else
+        let output = 1
+        Assert.Equal(expected, output)
 
 [<Theory>]
 [<InlineData ("Day12.txt", 25, 1)>]

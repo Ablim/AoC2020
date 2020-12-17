@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Input\Day11.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Input\Day13.3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -57,8 +60,6 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
 
-  <ItemGroup />
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -74,6 +75,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Day10\Day10.fsproj" />
+    <ProjectReference Include="..\Day11\Day11.fsproj" />
     <ProjectReference Include="..\Day12\Day12.fsproj" />
     <ProjectReference Include="..\Day13\Day13.fsproj" />
     <ProjectReference Include="..\Day5\Day5.fsproj" />
