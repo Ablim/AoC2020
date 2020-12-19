@@ -91,15 +91,15 @@ let day10Test filename expected part =
 
 [<Theory>]
 [<InlineData ("Day11.txt", 37, 1)>]
-[<InlineData ("Day11.txt", 0, 2)>]
+[<InlineData ("Day11.txt", 26, 2)>]
 let day11Test filename expected part =
     let input = File.ReadAllLines $"Input\\{filename}"
     
     if part = 1 then
-        let output = generateSeating input |> countOccupied
+        let output = generateSeating1 input |> countOccupied
         Assert.Equal(expected, output)
     else
-        let output = 1
+        let output = generateSeating2 input |> countOccupied
         Assert.Equal(expected, output)
 
 [<Theory>]
