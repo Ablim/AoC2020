@@ -8,6 +8,7 @@ open Boot
 open BusPlanner
 open ColoredBags
 open CustomCustoms
+open DockingSystem
 open Navigation
 open SeatingSystem
 open Validators
@@ -133,4 +134,13 @@ let day13Part1Test filename expected part =
 let day13Part2Test filename expected =
     let input = File.ReadAllLines $"Input\\{filename}"
     let output = getSchedule input.[0]
+    Assert.Equal(bigint.Parse expected, output)
+
+[<Theory>]
+[<InlineData ("Day14.txt", "165", 1)>]
+let day14Test filename expected part =
+    let input =
+        File.ReadAllLines $"Input\\{filename}"
+            |> Seq.toList
+    let output = initializeMemory input |> sumMemory
     Assert.Equal(bigint.Parse expected, output)

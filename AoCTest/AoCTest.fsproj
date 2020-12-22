@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Input\Day14.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Input\Day11.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -78,6 +81,7 @@
     <ProjectReference Include="..\Day11\Day11.fsproj" />
     <ProjectReference Include="..\Day12\Day12.fsproj" />
     <ProjectReference Include="..\Day13\Day13.fsproj" />
+    <ProjectReference Include="..\Day14\Day14.fsproj" />
     <ProjectReference Include="..\Day5\Day5.fsproj" />
     <ProjectReference Include="..\Day6\Day6.fsproj" />
     <ProjectReference Include="..\Day7\Day7.fsproj" />
