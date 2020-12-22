@@ -10,4 +10,6 @@ let main argv =
     printfn "Day 14"
     let output = initializeMemory input |> sumMemory
     printfn "Answer to part 1 is %A" output
+    let output = initializeMemory2 input |> sumMemory
+    printfn "Answer to part 2 is %A" output
     0 // return an integer exit code

@@ -138,9 +138,14 @@ let day13Part2Test filename expected =
 
 [<Theory>]
 [<InlineData ("Day14.txt", "165", 1)>]
+[<InlineData ("Day14.1.txt", "208", 2)>]
 let day14Test filename expected part =
     let input =
         File.ReadAllLines $"Input\\{filename}"
             |> Seq.toList
-    let output = initializeMemory input |> sumMemory
-    Assert.Equal(bigint.Parse expected, output)
+    if part = 1 then
+        let output = initializeMemory input |> sumMemory
+        Assert.Equal(bigint.Parse expected, output)
+    else
+        let output = initializeMemory2 input |> sumMemory
+        Assert.Equal(bigint.Parse expected, output)
