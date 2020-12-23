@@ -12,6 +12,7 @@ open DockingSystem
 open MemoryGame
 open Navigation
 open SeatingSystem
+open TicketTranslation
 open Validators
 open XMAS
 
@@ -153,7 +154,7 @@ let day14Test filename expected part =
 
 [<Theory>]
 [<InlineData ("Day15.txt", "436", 1)>]
-[<InlineData ("Day15.txt", "175594", 2)>]
+//[<InlineData ("Day15.txt", "175594", 2)>] // Takes a couple of minutes
 let day15Test filename expected part =
     let input = File.ReadAllLines $"Input\\{filename}"
     if part = 1 then
@@ -162,3 +163,16 @@ let day15Test filename expected part =
     else
         let output = playMemoryGame input 30000000I
         Assert.Equal(bigint.Parse expected, output)
+
+[<Theory>]
+[<InlineData ("Day16.txt", 71, 1)>]
+let day16Test filename expected part =
+    let input =
+        File.ReadAllLines $"Input\\{filename}" |>
+            Seq.toList
+    if part = 1 then
+        let output = getScanningErrorRate input
+        Assert.Equal(expected, output)
+    else
+        let output = getScanningErrorRate input
+        Assert.Equal(expected, output)
