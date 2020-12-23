@@ -9,6 +9,7 @@ open BusPlanner
 open ColoredBags
 open CustomCustoms
 open DockingSystem
+open MemoryGame
 open Navigation
 open SeatingSystem
 open Validators
@@ -148,4 +149,16 @@ let day14Test filename expected part =
         Assert.Equal(bigint.Parse expected, output)
     else
         let output = initializeMemory2 input |> sumMemory
+        Assert.Equal(bigint.Parse expected, output)
+
+[<Theory>]
+[<InlineData ("Day15.txt", "436", 1)>]
+[<InlineData ("Day15.txt", "175594", 2)>]
+let day15Test filename expected part =
+    let input = File.ReadAllLines $"Input\\{filename}"
+    if part = 1 then
+        let output = playMemoryGame input 2020I
+        Assert.Equal(bigint.Parse expected, output)
+    else
+        let output = playMemoryGame input 30000000I
         Assert.Equal(bigint.Parse expected, output)
