@@ -166,6 +166,7 @@ let day15Test filename expected part =
 
 [<Theory>]
 [<InlineData ("Day16.txt", 71, 1)>]
+[<InlineData ("Day16.txt", 7, 2)>]
 let day16Test filename expected part =
     let input =
         File.ReadAllLines $"Input\\{filename}" |>
@@ -174,5 +175,8 @@ let day16Test filename expected part =
         let output = getScanningErrorRate input
         Assert.Equal(expected, output)
     else
-        let output = getScanningErrorRate input
+        // 0: row
+        // 1: class
+        // 2: seat
+        let output = getDepartureMultiple input
         Assert.Equal(expected, output)

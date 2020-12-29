@@ -11,4 +11,6 @@ let main argv =
     let output = getScanningErrorRate input
     printfn "Answer to part 1 is %i" output
 
+    let output = getDepartureMultiple input
+    printfn "Answer to part 2 is %i" output
     0 // return an integer exit code
