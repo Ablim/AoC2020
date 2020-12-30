@@ -179,4 +179,4 @@ let day16Test filename expected part =
         // 1: class
         // 2: seat
         let output = getDepartureMultiple input
-        Assert.Equal(expected, output)
+        Assert.Equal(expected.ToString(), output.ToString())

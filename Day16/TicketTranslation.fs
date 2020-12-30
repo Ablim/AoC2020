@@ -117,38 +117,61 @@ let private createColumns (tickets: seq<'a list>) length =
             }
     }
 
+let private createMapIndexKey (map: Map<string, 'b>) (index: int) =
+    let mapKey =
+        map |>
+            Seq.map (fun x -> x.Key) |>
+                Seq.fold (fun state x -> state + x) ""
+    mapKey + index.ToString()
+
 let private findTicketSections labeledIntervals (tickets: int list list) =
     let maxIndex = tickets.Head.Length - 1
     let columns =
         createColumns tickets maxIndex |>
             Seq.toArray
-    let resultArray = Array.zeroCreate<string> (maxIndex+1)
-    let rec loop (map: Map<string, (int * int) list>) selected index =
-        if index > maxIndex then
-            Some selected
+    let mutable lookup = Map.empty
+    let mutable branchLookup = Map.empty
+
+    let rec loop (labelMap: Map<string, (int * int) list>) (resultMap: Map<int, string>) index =
+        if labelMap.IsEmpty then
+            (true, resultMap)
         else
-            if not (resultArray.[index] = null) then
-                Some resultArray.[index]
+            let branchKey = createMapIndexKey labelMap index
+            
+            if branchLookup.ContainsKey branchKey then
+                branchLookup.[branchKey]
             else
-                let candidates =
-                    seq {
-                        for m in map do
-                            if isSequenceInIntervals columns.[index] m.Value then
-                                let newMap = map.Remove m.Key
-                                if (loop newMap m.Key (index+1)) = None then
-                                    None
+                let thisLevelResult =
+                    labelMap |>
+                        Seq.map (fun m ->
+                            let lookupKey = m.Key + index.ToString()
+                            if not (lookup.ContainsKey lookupKey) then
+                               lookup <- lookup.Add(lookupKey, isSequenceInIntervals columns.[index] m.Value)
+                        
+                            if lookup.[lookupKey] then
+                                let newMap = labelMap.Remove m.Key
+                                let subTreeResult = loop newMap resultMap (index+1)
+                                if fst subTreeResult then
+                                    (true, (snd subTreeResult).Add(index, m.Key))
                                 else
-                                    Some m.Key
-                    } |>
-                        Seq.where (fun x -> not (x = None))
-                match Seq.tryHead candidates with
-                | None -> None
+                                    (false, Map.empty)
+                            else
+                                (false, Map.empty)
+                        ) |>
+                            Seq.where (fun x -> fst x)
+                
+                match Seq.tryHead thisLevelResult with
+                | None ->
+                    branchLookup <- branchLookup.Add(branchKey, (false, Map.empty))
+                    (false, Map.empty)
                 | Some x ->
-                    printfn "%i candidates at index %i" (Seq.length candidates) index
-                    resultArray.[index] <- x.Value
+                    branchLookup <- branchLookup.Add(branchKey, x)
                     x
-    loop labeledIntervals "" 0 |> ignore
-    resultArray
+    let result = loop labeledIntervals Map.empty 0
+    snd result |>
+        Seq.sortBy (fun x -> x.Key) |>
+            Seq.map (fun x -> x.Value) |>
+                Seq.toArray
 
 let private getIndicesOf (word: string) (words: string []) =
     seq {
@@ -169,4 +192,4 @@ let getDepartureMultiple input =
     let myTicket = parseMyTicket input |> Seq.toArray
     getIndicesOf "departure" sectionLookup |>
         Seq.map (fun x -> myTicket.[x]) |>
-            Seq.fold (fun a x -> x * a) 1
+            Seq.fold (fun state x -> state * (bigint x)) 1I
