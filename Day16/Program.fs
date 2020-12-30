@@ -1,4 +1,5 @@
-﻿open System.IO
+﻿open System.Diagnostics
+open System.IO
 open TicketTranslation
 
 [<EntryPoint>]
@@ -11,6 +12,8 @@ let main argv =
     let output = getScanningErrorRate input
     printfn "Answer to part 1 is %i" output
 
+    let timer = Stopwatch.StartNew()
     let output = getDepartureMultiple input
-    printfn "Answer to part 2 is %A" output
+    timer.Stop()
+    printfn "Answer to part 2 is %A in %i ms" output timer.ElapsedMilliseconds
     0 // return an integer exit code
