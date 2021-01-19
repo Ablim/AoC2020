@@ -7,6 +7,7 @@ open Adapters
 open Boot
 open BusPlanner
 open ColoredBags
+open ConwayCubes
 open CustomCustoms
 open DockingSystem
 open MemoryGame
@@ -180,3 +181,14 @@ let day16Test filename expected part =
         // 2: seat
         let output = getDepartureMultiple input
         Assert.Equal(expected.ToString(), output.ToString())
+
+[<Theory>]
+[<InlineData ("Day17.txt", 112, 1)>]
+//[<InlineData ("Day17.txt", , 2)>]
+let day17Test filename expected part =
+    let input = File.ReadAllLines $"Input\\{filename}"
+    if part = 1 then
+        let output = sixCycleBoot input
+        Assert.Equal(expected, output)
+    else
+        ()
